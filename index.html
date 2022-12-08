@@ -13,6 +13,7 @@
         integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="index.js"></script>
 </head>
 
 <body>
@@ -23,45 +24,19 @@
         <form>
             <div class="mb-3">
                 <!-- <label for="exampleFormControlInput1" class="form-label">Email address</label> -->
-                <input type="name" class="form-control" id="nameFormControl" placeholder="Enter Name">
+                <input id="name" type="name" class="form-control" id="nameFormControl" placeholder="Enter Name">
             </div>
             <div class="mb-3">
                 <!-- <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label> -->
-                <textarea class="form-control" id="FormControlTextarea" rows="3"
+                <textarea id="message" class="form-control" id="FormControlTextarea" rows="3"
                     placeholder="Enter your Message"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button id="send" type="submit" class="btn btn-primary">Submit</button>
+            <button id="del" type="submit" class="btn btn-primary">Clear Chat</button>
         </form>
-        <div id=”messages”>
-
-        </div>
     </div>
+    <div id="messages"></div>
     <script>
-        $(() => {
-            $("#send").click(() => {
-                sendMessage({
-                    name: $("#name").val(),
-                    message: $("#message").val()
-                });
-            })
-            getMessages()
-        })
-
-        function addMessages(message) {
-            $("#messages").append(`
-              <h4> ${message.name} </h4>
-              <p>  ${message.message} </p>`)
-        }
-
-        function getMessages() {
-            $.get("http://localhost:3000/messages", (data) => {
-                data.forEach(addMessages);
-            })
-        }
-
-        function sendMessage(message) {
-            $.post("http://localhost:3000/messages", message)
-        }
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

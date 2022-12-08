@@ -3,9 +3,10 @@ var bodyParser = require("body-parser");
 var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
+
 var mongoose = require("mongoose");
 
-app.use(express.static(__dirname));
+app.use(express.static("/Users/shouryatyagi/Desktop/Projects/ChatApplication"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -14,7 +15,7 @@ var Message = mongoose.model("Message", {
   message: String,
 });
 
-var dbUrl = "mongodb://amkurian:amkurian1@ds257981.mlab.com:57981/simple-chat";
+var dbUrl = "mongodb://localhost:27017/test";
 
 app.get("/messages", (req, res) => {
   Message.find({}, (err, messages) => {
@@ -31,7 +32,9 @@ app.get("/messages/:user", (req, res) => {
 
 app.post("/messages", async (req, res) => {
   try {
+    // console.log(req);
     var message = new Message(req.body);
+    // console.log(message);
 
     var savedMessage = await message.save();
     console.log("saved");
@@ -48,11 +51,11 @@ app.post("/messages", async (req, res) => {
   }
 });
 
-io.on("connection", () => {
-  console.log("a user is connected");
-});
-
-mongoose.connect(dbUrl, { useMongoClient: false }, (err) => {
+mongoose.set("strictQuery", false);
+// io.on("connection", () => {
+//   console.log("a user is connected");
+// });
+mongoose.connect(dbUrl, (err) => {
   console.log("mongodb connected", err);
 });
 
